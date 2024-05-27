@@ -11,9 +11,12 @@
 - 그 외 추가 예정
 
 ### Task 진행 과정
+[v] FastAPI 기반 사용자 관리, FastAPI 결제 구현 레포지토리 탐색
+[ ] 로컬에서 도커 기반으로 환경 세팅.
+[ ] 레토지토리 참고하여 필요한 기능 구현
 
 
 ### 참고 자료
 - [FastAPI in Container:Docker](https://fastapi.tiangolo.com/deployment/docker/#replication-number-of-processes)
 - [fastapi-users](https://github.com/fastapi-users/fastapi-users)
-- [stripe-fastapi-demo] (https://github.com/rsusik/stripe-fastapi-demo)
+- [stripe-fastapi-demo](https://github.com/rsusik/stripe-fastapi-demo)
