@@ -12,13 +12,12 @@ RUN mkdir /sharespace/
 COPY main.py /workspace/main.py
 
 # 환경 변수 설정
-ENV DB_HOST=tn-sql:3306
+ENV DB_HOST=tn-sql
 ENV DB_USER=admin
 ENV DB_PASSWORD=best-student
 ENV DB_NAME=tndb
-
-ARG START_DATE="2024-05-30"
-ARG END_DATE="2024-05-31"
+ENV START_DATE="2024-05-30"
+ENV END_DATE="2024-05-31"
 
 #ENTRYPOINT ["python"]
 #CMD ["/workspace/main.py", $START_DATE, $END_DATE]
