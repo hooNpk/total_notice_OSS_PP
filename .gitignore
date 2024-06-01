@@ -135,7 +135,9 @@ celerybeat.pid
 # Environments
 .env
 .
-wba-venv
+tn-venv
+crawl/crawl-venv
+crawl/sharespace
 env/
 venv/
 ENV/
