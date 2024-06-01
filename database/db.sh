@@ -1,6 +1,6 @@
 #!/bin/sh
 
-IMAGE_NAME="hoonpk/tn-sql:0.1"
+IMAGE_NAME="hoonpk/tn-sql:0.2"
 
 # 이미지가 존재하는지 확인
 if docker image inspect "$IMAGE_NAME" > /dev/null 2>&1; then

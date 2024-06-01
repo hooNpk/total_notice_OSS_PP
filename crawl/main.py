@@ -4,6 +4,8 @@ import requests
 from bs4 import BeautifulSoup, NavigableString
 import pandas as pd
 import traceback
+import mysql.connector
+from mysql.connector import Error
 
 def get_skku_notices(base_url, start_date, end_date):
     notices = []
@@ -54,6 +56,40 @@ def get_skku_notices(base_url, start_date, end_date):
         page += 1
     return notices
 
+def insert_articles(df):
+    try:
+        # 데이터베이스 연결 설정
+        connection = mysql.connector.connect(
+            host='tn-sql',  # MySQL 컨테이너 이름
+            database='tndb',  # 데이터베이스 이름
+            user='admin',  # MySQL 사용자
+            password='best-student',  # MySQL 패스워드
+            charset='utf8mb4'
+        )
+        cursor = connection.cursor()
+        
+        # SQL 쿼리
+        query = '''
+        INSERT INTO articles (title, date, url, writer, category, source)
+        VALUES (%s, %s, %s, %s, %s, %s)
+        '''
+        
+        # 데이터프레임의 행을 튜플로 변환하여 삽입
+        for _, row in df.iterrows():
+            cursor.execute(query, tuple(row))
+        
+        connection.commit()
+        
+    except Error as e:
+        print("Error while connecting to MySQL", e)
+    finally:
+        # 연결 종료
+        if (connection.is_connected()):
+            cursor.close()
+            connection.close()
+            print("MySQL connection is closed")
+
+
 # 크롤링할 URL 및 날짜 범위 설정
 skku_url = "https://www.skku.edu/skku/campus/skk_comm/notice01.do?mode=list&&articleLimit=10&article.offset="
 start_date = "2024-05-30"  # 시작 날짜
@@ -66,12 +102,8 @@ notices = get_skku_notices(skku_url, start_date, end_date)
 # 소프트웨어대학 공지사항 : https://sw.skku.edu/sw/notice.do?mode=list&&articleLimit=10&article.offset=20
 # 소프트웨어학과 공지사항 : https://cse.skku.edu/cse/notice.do
 
-# 이걸 데이터프레임 형태로 만들어서 csv 저장. 
-# 현재 디렉토리 기준으로 해서 volume을 설정해야 할 듯
-# mysql 관련 컨테이너에서 집어넣자
-# # 데이터프레임으로 변환 후 출력
-df = pd.DataFrame(notices)
+skku_df = pd.DataFrame(notices)
+insert_articles(skku_df)
 
-#결과를 csv 파일로 저장
-#csv를 읽어와서 mysql database에 넣어주는 건 다른 container에서 실행
-df.to_csv('/sharespace/skku_notices_240531-240531.csv', index=False, encoding='utf-8')
+#결과를 csv 파일로 저장. 이 CSV 파일을 읽어서 다른 container에 있는 mysql DB에 넣어줌.
+# skku_df.to_csv('/sharespace/skku_notices_240531-240531.csv', index=False, encoding='utf-8')
