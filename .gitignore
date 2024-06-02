@@ -143,8 +143,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-server/backend/back-venv
-server/frontend/node_moduels
+webpage/backend/back-venv
+webpage/frontend/node_moduels
 
 # Spyder project settings
 .spyderproject
