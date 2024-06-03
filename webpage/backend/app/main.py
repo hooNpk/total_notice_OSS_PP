@@ -1,5 +1,9 @@
+import os
+from datetime import date
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import mysql.connector
+from mysql.connector import Error
 
 app = FastAPI()
 app.add_middleware(
@@ -10,11 +14,50 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# 데이터베이스 설정
+DATABASE_CONFIG = {
+    "host": os.getenv("DB_HOST"),  # Docker 내부 네트워크에서 MySQL 컨테이너의 이름
+    "database": os.getenv("DB_NAME"),
+    "user": os.getenv("DB_USER"),
+    "password": os.getenv("DB_PASSWORD")
+}
+
+def get_database_connection():
+    try:
+        connection = mysql.connector.connect(**DATABASE_CONFIG)
+        return connection
+    except Error as e:
+        print(f"Error connecting to MySQL Database: {e}")
+        return None
+    
+def fetch_data():
+    connection = get_database_connection()
+    if connection is None:
+        return []
+
+    cursor = connection.cursor(dictionary=True)
+    cursor.execute("SELECT title, date, writer, category, source, url FROM articles ORDER BY date DESC")
+    rows = cursor.fetchall()
+    cursor.close()
+    connection.close()
+
+    formatted_data = []
+    for row in rows:
+        # date 객체를 'YYYY-MM-DD' 형식의 문자열로 변환
+        formatted_date = row['date'].strftime('%Y-%m-%d') if isinstance(row['date'], date) else row['date']
+        formatted_data.append({
+            "title": row['title'],
+            "date": formatted_date,
+            "writer": row['writer'],
+            "ctgry": row['category'],
+            "source": row['source'],
+            "url": row['url']
+        })
+    return formatted_data
+
 @app.get("/data")
 def read_data():
-    return [
-        {"title": "Item 1", "date": "2024-05-30", "writer":"skku", "ctgry":"[채용]", "source" : "소프트웨어대학", "url":"https://www.skku.edu/skku/campus/skk_comm/notice01.do?mode=view&articleNo=118031&article.offset=0&articleLimit=10"},
-        {"title": "Item 2", "date": "2024-05-31", "writer":"skku2", "ctgry":"[채용]", "source" : "소프트웨어융합대학", "url":"https://www.skku.edu/skku/campus/skk_comm/notice01.do?mode=view&articleNo=116747&article.offset=0&articleLimit=10"},
-    ]
+    data = fetch_data()
+    return data
 
 
