@@ -8,10 +8,15 @@ import traceback
 import mysql.connector
 from mysql.connector import Error
 
-def get_skku_notices(base_url, start_date, end_date):
+def get_skku_notices(base_url, start_date, end_date, type):
     notices = []
     page = 1
     date_text = start_date
+    soup_paths = {
+        "skku" : '#jwxe_main_content > div > div > div.container > div.board-name-list.board-wrap > ul',
+        "sw_skku" : '#jwxe_main_content > div > div > div.board-name-list.board-wrap > ul'
+    }
+
     while start_date <= date_text: # 날짜가 시작 날짜보다 이전이면 크롤링 종료
         try:
             response = requests.get(f"{base_url}{(page-1)*10}")
@@ -22,9 +27,8 @@ def get_skku_notices(base_url, start_date, end_date):
 
         # 공지사항 리스트 추출
         notice_elements = soup.select_one(
-            '#jwxe_main_content > div > div > div.container > div.board-name-list.board-wrap > ul'
+            soup_paths[type]
         ).children
-
 
         if not notice_elements:
             break
@@ -44,14 +48,18 @@ def get_skku_notices(base_url, start_date, end_date):
             full_link = base_url.split('?')[0] + link
             
             if start_date <= date_text <= end_date:
-                notices.append({
+                article = {
                     "title": title_text,
                     "date": date_text,
                     "url": full_link,
                     "writer" : writer_text,
-                    "category" : ctgry_text,
-                    "source" : "skku"
-                })
+                    "category" : ctgry_text
+                }
+                if type=="skku":
+                    article['source'] = "성균관대학교"
+                elif type=="sw_skku":
+                    article['source'] = "성균관대 소프트웨어융합대학"
+                notices.append(article)
             else:
                 continue  
         page += 1
@@ -95,16 +103,17 @@ def main():
     start_date = os.getenv('START_DATE')
     end_date = os.getenv('END_DATE')
     skku_url = "https://www.skku.edu/skku/campus/skk_comm/notice01.do?mode=list&&articleLimit=10&article.offset="
+    sw_skku_url = "https://sw.skku.edu/sw/notice.do?mode=list&&articleLimit=10&article.offset="
 
     # 공지사항 크롤링
-    notices = get_skku_notices(skku_url, start_date, end_date)
-
-    # TODO 소프트웨어대학, 소프트웨어학과 공지사항 크롤링
-    # 소프트웨어대학 공지사항 : https://sw.skku.edu/sw/notice.do?mode=list&&articleLimit=10&article.offset=20
-    # 소프트웨어학과 공지사항 : https://cse.skku.edu/cse/notice.do
+    notices = get_skku_notices(skku_url, start_date, end_date, "skku")
+    sw_notices = get_skku_notices(sw_skku_url, start_date, end_date, "sw_skku")
 
     skku_df = pd.DataFrame(notices)
+    skku_sw_df = pd.DataFrame(sw_notices)
+
     insert_articles(skku_df)
+    insert_articles(skku_sw_df)
 
     #결과를 csv 파일로 저장. 이 CSV 파일을 읽어서 다른 container에 있는 mysql DB에 넣어줌.
     # skku_df.to_csv('/sharespace/skku_notices_240531-240531.csv', index=False, encoding='utf-8')
