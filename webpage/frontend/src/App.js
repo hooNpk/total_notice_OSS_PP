@@ -10,7 +10,44 @@ function App() {
       .then(data => setData(data));
   }, []);
 
-  const columns = ["Title", "Category", "Date", "Writer", "Source"];
+  const columns = [
+    {
+      name: "title",
+      label: "Title",
+      options: {
+        filter: false
+      }
+    },
+    {
+      name: "ctgry",
+      label: "Category",
+      options: {
+        filter: true
+      }
+    },
+    {
+      name: "date",
+      label: "Date",
+      options: {
+        filter: true
+      }
+    },
+    {
+      name: "writer",
+      label: "Writer",
+      options: {
+        filter: false
+      }
+    },
+    {
+      name: "source",
+      label: "Source",
+      options: {
+        filter: true
+      }
+    }
+  ];
+  
   const options = {
     filterType: 'checkbox',
     onRowClick: (rowData, rowMeta) => {
