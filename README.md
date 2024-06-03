@@ -2,7 +2,10 @@
 - 이 프로젝트는 2024년 1학기 성균관대학교 오픈소스소프트웨어실습 개인 프로젝트로 시작하였습니다.
 - 성균관대학교 웹사이트에 흩어져 있는 공지를 모아 하나의 페이지에서 볼 수 있습니다.
 - dockerfile을 사용하여 서버 인스턴스와 데이터베이스를 쉽게 띄울 수 있습니다.
-![프로젝트 데모](https://github.com/hooNpk/total_notice_OSS_PP/blob/main/Total-Notice.gif)
+
+<video width="900" height="600" controls>
+  <source src="https://github.com/hooNpk/total_notice_OSS_PP/blob/main/Total-Notice.mp4" type="video/mp4">
+</video>
 
 ---
 
