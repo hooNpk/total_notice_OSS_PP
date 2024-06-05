@@ -21,6 +21,7 @@
 ---
 
 ### 코드 설명
+```plaintext
 TOTAL_NOTICE/
 ├── README.md
 ├── requirements.txt
@@ -44,7 +45,7 @@ TOTAL_NOTICE/
         ├── Dockerfile
         └── app/
             └── main.py     - fastapi 서버 코드
-
+```
 ---
 
 ### 사용방법
