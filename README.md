@@ -4,7 +4,7 @@
 - shell을 사용하여 컨테이너 기반의 서버와 데이터베이스를 쉽게 띄울 수 있습니다.
 
 ### 프로젝트 데모
-![프로젝트 데모](https://github.com/hooNpk/total_notice_OSS_PP/blob/main/assets/Total-Notice.gif)
+![프로젝트 데모](https://github.com/hooNpk/total_notice_OSS_PP/blob/main/assets/Totla-Notice.gif)
   
 ---
   
@@ -17,10 +17,33 @@
     - **tn-back** : tn-sql 데이터베이스를 참조하여 뿌려주는 fastapi 서버 컨테이너. webpage/backend 폴더
     - **tn-front** : React 기반의 웹페이지를 제공하는 컨테이너. webpage/frontend 폴더
     - **tn은 Total Notice**의 줄인말입니다.
+
 ---
 
 ### 코드 설명
-- 
+TOTAL_NOTICE/
+├── README.md
+├── requirements.txt
+├── .gitignore
+├── crawl/                  - 공지사항 페이지에서 크롤링하여 데이터베이스에 저장
+│   ├── crawl.sh
+│   ├── Dockerfile
+│   └── main.py             - 크롤링하고, DB에 남는 코드
+├── database/
+│   ├── db.sh
+│   ├── Dockerfile
+│   └── init.sql            - 데이터베이스 테이블 스키마 설정
+└── webpage/
+    ├── webpage.sh
+    ├── frontend            - 공지를 모아서 보여주는 웹 페이지
+    │   ├── Dockerfile
+    │   ├── package.json
+    │   ├── src/            - App.js에 웹페이지 코드
+    │   └── public/
+    └── backend             - 데이터베이스를 참조하여 API 제공하는 fastapi 서버
+        ├── Dockerfile
+        └── app/
+            └── main.py     - fastapi 서버 코드
 
 ---
 
@@ -42,7 +65,9 @@
 1. tn-crawl 컨테이너를 띄운 뒤 크롤링할 날짜를 입력하세요. `crawl/Dockerfile`을 참고하세요. 
     ```bash
     $ bash crawl/crawl.sh
+    >> 크롤링하고 싶은 시작 날짜를 입력하세요 (예: 2024-05-30):
     $ 2024-05-30
+    >> 크롤링하고 싶은 종료 날짜를 입력하세요 (예: 2024-05-31):
     $ 2024-06-03
     ```
 1. tn-back 컨테이너와 tn-front 컨테이너를 띄웁니다. `webpage/backend/Dockerfile`, `webpage/frontend/Dockerfile`을 참고하세요.
@@ -50,7 +75,6 @@
     $ bash webpage/webpage.sh
     ```
 1. 웹 브라우저에서 `127.0.0.1`에 접속합니다.
-![사용방법]()
 
 ---
 
