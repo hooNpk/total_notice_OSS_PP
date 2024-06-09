@@ -59,11 +59,11 @@ TOTAL_NOTICE/
     $ git clone https://github.com/hooNpk/total_notice_OSS_PP
     cd total_notice_OSS_PP
     ```
-1. tn-sql 컨테이너를 띄웁니다. 설정은 `database/Dockerfile`, `database/init.sql`에 있습니다.
+1. 아래 명령어를 실행하여 tn-sql 컨테이너를 띄웁니다. 설정은 `database/Dockerfile`, `database/init.sql`에 있습니다. docker hub에서 이미지를 pull해서 자동으로 container를 띄웁니다.
     ```bash
     $ bash databse/db.sh
     ```
-1. tn-crawl 컨테이너를 띄운 뒤 크롤링할 날짜를 입력하세요. `crawl/Dockerfile`을 참고하세요. 
+1. 아래 명령어로 tn-crawl 컨테이너를 띄운 뒤 크롤링할 날짜를 입력하세요. `crawl/Dockerfile`을 참고하세요. 마찬가지로 docker hub에서 이미지를 pull해와 container를 띄웁니다.
     ```bash
     $ bash crawl/crawl.sh
     >> 크롤링하고 싶은 시작 날짜를 입력하세요 (예: 2024-05-30):
@@ -71,7 +71,7 @@ TOTAL_NOTICE/
     >> 크롤링하고 싶은 종료 날짜를 입력하세요 (예: 2024-05-31):
     $ 2024-06-03
     ```
-1. tn-back 컨테이너와 tn-front 컨테이너를 띄웁니다. `webpage/backend/Dockerfile`, `webpage/frontend/Dockerfile`을 참고하세요.
+1. 아래 명령어로 tn-back 컨테이너와 tn-front 컨테이너를 띄웁니다. `webpage/backend/Dockerfile`, `webpage/frontend/Dockerfile`을 참고하세요. docker hub에서 이미지를 pull해와 container를 띄웁니다.
     ```bash
     $ bash webpage/webpage.sh
     ```
