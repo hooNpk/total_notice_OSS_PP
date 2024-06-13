@@ -19,7 +19,16 @@ def get_skku_notices(base_url, start_date, end_date, type):
 
     while start_date <= date_text: # 날짜가 시작 날짜보다 이전이면 크롤링 종료
         try:
-            response = requests.get(f"{base_url}{(page-1)*10}")
+            #######################################################
+            #####################PHASE 2###########################
+            #######################################################
+            headers = {
+                "User-Agent": "curl/7.68.0"  # curl의 User-Agent 예시
+            }
+            response = requests.get(f"{base_url}{(page-1)*10}", headers=headers)
+            #######################################################
+            #####################PHASE 2###########################
+            #######################################################
         except Exception as e:
             print(traceback.format_exc())
             print(e)
@@ -100,8 +109,10 @@ def insert_articles(df):
 
 def main():
     # 크롤링할 URL 및 날짜 범위 설정
-    start_date = os.getenv('START_DATE')
-    end_date = os.getenv('END_DATE')
+    # start_date = os.getenv('START_DATE')
+    # end_date = os.getenv('END_DATE')
+    start_date = "2024-05-30"
+    end_date = "2024-06-13"
     skku_url = "https://www.skku.edu/skku/campus/skk_comm/notice01.do?mode=list&&articleLimit=10&article.offset="
     sw_skku_url = "https://sw.skku.edu/sw/notice.do?mode=list&&articleLimit=10&article.offset="
 
