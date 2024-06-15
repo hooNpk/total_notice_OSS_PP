@@ -96,18 +96,28 @@ def crawl_notices(target_url, soup_path, start_date, end_date):
         date = notice.select_one('dl > dd > ul > li:nth-child(3)')
         date_text = date.text.strip()
         full_link = target_url.split('?')[0] + link
-        
+        #######################################################
+        #####################PHASE 2###########################
+        #######################################################
+        views = notice.select_one('dl > dd > ul > li:nth-child(4) > span')
+        views_text = views.text.strip()
+
         if start_date <= date_text and date_text <= end_date:
             article = {
                 "title": title_text,
                 "date": date_text,
                 "url": full_link,
                 "writer" : writer_text,
-                "category" : ctgry_text
+                "category" : ctgry_text,
+                "views" : views_text
             }
             notices.append(article)
         else:
             continue  
+
+        #######################################################
+        #####################PHASE 2###########################
+        #######################################################
     return notices
 
 def insert_articles(df, type):
@@ -130,11 +140,14 @@ def insert_articles(df, type):
         # )
         cursor = connection.cursor()
         
+        #######################################################
+        #####################PHASE 2###########################
+        #######################################################
         # SQL 쿼리
         query = '''
         INSERT INTO articles
-        (title, date, url, writer, category, source)
-        VALUES (%s, %s, %s, %s, %s, %s)
+        (title, date, url, writer, category, views, source)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
         '''
 
         # 데이터프레임의 행을 튜플로 변환하여 삽입
@@ -142,6 +155,9 @@ def insert_articles(df, type):
             row['source'] = types[type]
             cursor.execute(query, tuple(row))
         
+        #######################################################
+        #####################PHASE 2###########################
+        #######################################################
         connection.commit()
         
     except Error as e:

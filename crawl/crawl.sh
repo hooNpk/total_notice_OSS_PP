@@ -4,7 +4,7 @@ CUR_DIR=$(pwd)
 
 mkdir /sharespace
 
-IMAGE_NAME="hoonpk/tn-crawl:0.4"
+IMAGE_NAME="hoonpk/tn-crawl:0.5"
 # 이미지가 존재하는지 확인
 if docker image inspect "$IMAGE_NAME" > /dev/null 2>&1; then
     echo "이미지 $IMAGE_NAME가 이미 존재합니다."

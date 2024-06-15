@@ -36,7 +36,10 @@ def fetch_data():
         return []
 
     cursor = connection.cursor(dictionary=True)
-    cursor.execute("SELECT title, date, writer, category, source, url FROM articles ORDER BY date DESC")
+    #######################################################
+    #####################PHASE 2###########################
+    #######################################################
+    cursor.execute("SELECT title, date, writer, category, source, views, url FROM articles ORDER BY date DESC")
     rows = cursor.fetchall()
     cursor.close()
     connection.close()
@@ -51,8 +54,12 @@ def fetch_data():
             "writer": row['writer'],
             "ctgry": row['category'],
             "source": row['source'],
+            "views": row['views'],
             "url": row['url']
         })
+    #######################################################
+    #####################PHASE 2###########################
+    #######################################################
     return formatted_data
 
 @app.get("/data")
