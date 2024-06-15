@@ -29,3 +29,8 @@ docker run -d --rm --name tn-crawl --link tn-sql \
     -e START_DATE="$start_date" \
     -e END_DATE="$end_date" \
     "$IMAGE_NAME"
+
+# 테스트용 도커 실행 명령어
+# docker run -it --name tn-crawl --link tn-sql \
+#     -v $CUR_DIR/sharespace:/sharespace \
+#     "$IMAGE_NAME" /bin/bash
