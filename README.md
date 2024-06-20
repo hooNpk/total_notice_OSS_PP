@@ -11,6 +11,7 @@
 ### 요약
 - 소프트웨어학과인 저는 세 개의 공지 페이지를 봐야합니다. 소프트웨어학과 공지 페이지, 소프트웨어융합대학 공지 페이지, 성균관대학 공지페이지입니다.
 - 공지 페이지에는 유용한 정보가 올라오기 때문에 챙겨봐야 하지만 세 개 페이지를 다 들어가는 건 **귀찮습니다**. 그래서 여러 곳의 공지를 한꺼번에 볼 수 있는 페이지를 만들었습니다.
+- 프린트(인쇄), 필터링, CSV 파일 다운로드, PAGENATION 기능이 포함되어 있습니다.
 - 이 프로젝트는 네 개의 컨테이너로 구성되어 있습니다.
     - **tn-crawl** : 공지를 크롤링해와 tn-sql 컨테이너에 있는 데이터베이스에 저장. crawl 폴더.
     - **tn-sql** : mysql 데이터베이스가 들어있는 컨테이너. database 폴더.
@@ -59,11 +60,11 @@ TOTAL_NOTICE/
     $ git clone https://github.com/hooNpk/total_notice_OSS_PP
     cd total_notice_OSS_PP
     ```
-1. tn-sql 컨테이너를 띄웁니다. 설정은 `database/Dockerfile`, `database/init.sql`에 있습니다.
+1. 아래 명령어를 실행하여 tn-sql 컨테이너를 띄웁니다. 설정은 `database/Dockerfile`, `database/init.sql`에 있습니다. docker hub에서 이미지를 pull해서 자동으로 container를 띄웁니다.
     ```bash
     $ bash databse/db.sh
     ```
-1. tn-crawl 컨테이너를 띄운 뒤 크롤링할 날짜를 입력하세요. `crawl/Dockerfile`을 참고하세요. 
+1. 아래 명령어로 tn-crawl 컨테이너를 띄운 뒤 크롤링할 날짜를 입력하세요. `crawl/Dockerfile`을 참고하세요. 마찬가지로 docker hub에서 이미지를 pull해와 container를 띄웁니다.
     ```bash
     $ bash crawl/crawl.sh
     >> 크롤링하고 싶은 시작 날짜를 입력하세요 (예: 2024-05-30):
@@ -71,7 +72,7 @@ TOTAL_NOTICE/
     >> 크롤링하고 싶은 종료 날짜를 입력하세요 (예: 2024-05-31):
     $ 2024-06-03
     ```
-1. tn-back 컨테이너와 tn-front 컨테이너를 띄웁니다. `webpage/backend/Dockerfile`, `webpage/frontend/Dockerfile`을 참고하세요.
+1. 아래 명령어로 tn-back 컨테이너와 tn-front 컨테이너를 띄웁니다. `webpage/backend/Dockerfile`, `webpage/frontend/Dockerfile`을 참고하세요. docker hub에서 이미지를 pull해와 container를 띄웁니다.
     ```bash
     $ bash webpage/webpage.sh
     ```
