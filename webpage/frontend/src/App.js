@@ -40,6 +40,13 @@ function App() {
       }
     },
     {
+      name: "views",
+      label: "Views",
+      options: {
+        filter: false
+      }
+    },
+    {
       name: "source",
       label: "Source",
       options: {
@@ -62,7 +69,7 @@ function App() {
       <MUIDataTable
         title={"Total Notice"}
         data={data.map(
-          item => [item.title, item.ctgry, item.date, item.writer, item.source]
+          item => [item.title, item.ctgry, item.date, item.writer, item.views, item.source]
         )}
         columns={columns}
         options={options}
